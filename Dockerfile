@@ -21,6 +21,7 @@ RUN curl -L https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/ope
 RUN mv oc /usr/local/bin/oc
 
 # pre-commit
+RUN pipx ensurepath
 RUN pipx install pre-commit
 RUN curl -sSLo ./terraform-docs.tar.gz https://terraform-docs.io/dl/v0.20.0/terraform-docs-v0.20.0-$(uname)-amd64.tar.gz
 RUN tar -xzf terraform-docs.tar.gz -C /usr/local/bin
