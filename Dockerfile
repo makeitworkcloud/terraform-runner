@@ -20,7 +20,7 @@ RUN cp /usr/local/bin/tofu /usr/local/bin/terraform
 RUN curl -L https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz | tar xzvf -
 RUN mv oc /usr/local/bin/oc
 
-# Pre-commit
+# pre-commit
 RUN pipx install pre-commit
 RUN curl -sSLo ./terraform-docs.tar.gz https://terraform-docs.io/dl/v0.20.0/terraform-docs-v0.20.0-$(uname)-amd64.tar.gz
 RUN tar -xzf terraform-docs.tar.gz -C /usr/local/bin
