@@ -1,9 +1,12 @@
 ---
 name: Build & Push to ghcr.io
+
 on:
   push:
     branches:
       - main
+
+permissions: write-all
 
 jobs:
   deploy:
