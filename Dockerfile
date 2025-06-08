@@ -2,7 +2,7 @@ FROM --platform=linux/amd64 ubuntu:24.04
 
 LABEL description="Docker image for Terraform on AMD64 architecture."
 
-RUN apt-get update -qy && apt-get upgrade -qy && apt-get install -qy curl unzip gnupg python3 python3-pip pipx software-properties-common lsb-release
+RUN apt-get update -qy && apt-get upgrade -qy && apt-get install -qy curl unzip gnupg python3 python3-pip pipx software-properties-common lsb-release sudo
 
 # SOPS
 RUN curl -LO https://github.com/getsops/sops/releases/download/v3.10.2/sops-v3.10.2.linux.amd64
