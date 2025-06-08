@@ -1,8 +1,8 @@
-FROM --platform=linux/amd64 ubuntu:24.04
+FROM --platform=linux/amd64 alpine:latest
 
 LABEL description="Docker image for Terraform on AMD64 architecture."
 
-RUN apt-get update -qy && apt-get upgrade -qy && apt-get install -qy curl unzip gnupg python3 python3-pip pipx software-properties-common lsb-release sudo
+RUN apt-get update -qy && apt-get upgrade -qy && apt-get install -qy curl unzip gnupg python3 python3-pip pipx software-properties-common lsb-release
 
 # SOPS
 RUN curl -LO https://github.com/getsops/sops/releases/download/v3.10.2/sops-v3.10.2.linux.amd64
@@ -28,14 +28,5 @@ RUN chmod +x /usr/local/bin/terraform-docs
 RUN pipx install checkov
 RUN curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
 RUN curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
-
-# WARP
-# Add cloudflare gpg key
-RUN curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | gpg --yes --dearmor | apt-key add -
-
-# Add this repo to your apt repositories
-RUN add-apt-repository "deb https://pkg.cloudflareclient.com/ $(lsb_release -cs) main"
-
-RUN apt-get update -qy && apt-get install -qy cloudflare-warp
 
 CMD ["/bin/bash"]
