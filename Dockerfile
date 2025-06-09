@@ -24,11 +24,11 @@ RUN mv oc /usr/local/bin/oc
 # pre-commit
 RUN export PIPX_HOME=/opt/pipx
 RUN export PIPX_BIN_DIR=/usr/local/bin
-RUN pipx install --global pre-commit
+RUN pipx install pre-commit
 RUN curl -sSLo ./terraform-docs.tar.gz https://terraform-docs.io/dl/v0.20.0/terraform-docs-v0.20.0-$(uname)-amd64.tar.gz
 RUN tar -xzf terraform-docs.tar.gz -C /usr/local/bin
 RUN chmod +x /usr/local/bin/terraform-docs
-RUN PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install --global checkov
+RUN pipx install checkov
 RUN curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
 RUN curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
 
