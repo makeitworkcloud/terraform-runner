@@ -5,8 +5,9 @@ LABEL description="Docker image for Terraform on AMD64 architecture."
 RUN apt-get update -qy && apt-get upgrade -qy && apt-get install -qy curl unzip gnupg python3 python3-pip pipx
 
 # SOPS
-RUN curl -LO https://github.com/getsops/sops/releases/download/v3.10.2/sops-v3.10.2.linux.amd64
-RUN mv sops-v3.10.2.linux.amd64 /usr/local/bin/sops
+RUN SOPS_VERSION=3.10.2
+RUN curl -LO https://github.com/getsops/sops/releases/download/v${SOPS_VERSION}/sops-v${SOPS_VERSION}.linux.amd64
+RUN mv sops-v${SOPS_VERSION}.linux.amd64 /usr/local/bin/sops
 RUN chmod +x /usr/local/bin/sops
 
 # OpenTofu
