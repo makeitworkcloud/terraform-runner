@@ -39,7 +39,7 @@ WORKDIR /
 RUN git init pre-commit-init
 ADD pre-commit-config.yaml pre-commit-init/.pre-commit-config.yaml
 WORKDIR /pre-commit-init
-RUN cd pre-commit-init && pre-commit install-hooks
+RUN pre-commit install-hooks
 WORKDIR /root
 
 CMD ["/bin/bash"]
