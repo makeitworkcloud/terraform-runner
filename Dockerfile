@@ -1,6 +1,6 @@
 FROM --platform=linux/amd64 ubuntu:latest
 
-LABEL description="Docker image for Terraform on AMD64 architecture."
+LABEL description="Ubuntu-based image for OpenTofu/Terraform on AMD64 architecture."
 
 RUN apt-get update -qy && apt-get upgrade -qy && apt-get install -qy curl unzip gnupg python3 python3-pip pipx git jq yq
 
