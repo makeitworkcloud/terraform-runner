@@ -1,5 +1,5 @@
 ---
-name: Build & Push to ghcr.io
+name: Update the OpenShift image stream for the Terraform Runner
 
 on:
   workflow_run:
