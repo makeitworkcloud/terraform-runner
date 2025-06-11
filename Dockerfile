@@ -34,4 +34,12 @@ RUN curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/in
 RUN curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
 RUN curl -fsSL https://raw.githubusercontent.com/infracost/infracost/master/scripts/install.sh | sh
 
+# Setup pre-commit hooks
+WORKDIR /
+RUN git init pre-commit-init
+ADD pre-commit-config.yaml pre-commit-init/.pre-commit-config.yaml
+WORKDIR /pre-commit-init
+RUN cd pre-commit-init && pre-commit install-hooks
+WORKDIR /root
+
 CMD ["/bin/bash"]
