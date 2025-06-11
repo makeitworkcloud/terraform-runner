@@ -1,0 +1,34 @@
+---
+name: Build & Push to ghcr.io
+
+on:
+  workflow_run:
+    workflows: ["Build & Push to ghcr.io"]
+    types:
+      - completed
+
+permissions: write-all
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - uses: Boostport/setup-cloudflare-warp@v1
+        with:
+          organization: makeitworkcloud
+          auth_client_id: ${{ secrets.CLOUDFLARE_AUTH_CLIENT_ID }}
+          auth_client_secret: ${{ secrets.CLOUDFLARE_AUTH_CLIENT_SECRET }}
+
+      - uses: redhat-actions/oc-installer@v1
+
+      - uses: redhat-actions/oc-login@v1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT_SERVER_URL }}
+          openshift_username: ${{ secrets.OPENSHIFT_USERNAME }}
+          openshift_password: ${{ secrets.OPENSHIFT_PASSWORD }}
+          insecure_skip_tls_verify: true
+
+      - run: oc import-image terraform-runner -n arc-runners
