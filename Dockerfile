@@ -46,6 +46,9 @@ WORKDIR /pre-commit-init
 RUN pre-commit install-hooks
 WORKDIR /root
 
+# Enable Git as root
+RUN git config --global --add safe.directory '*'
+
 # Unlock sudo tasks
 RUN echo '' >/usr/bin/sudo
 RUN chmod 755 /usr/bin/sudo
