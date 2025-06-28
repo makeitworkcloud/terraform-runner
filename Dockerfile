@@ -46,7 +46,8 @@ WORKDIR /pre-commit-init
 RUN pre-commit install-hooks
 WORKDIR /root
 
-# Unlock root account, for sudo?
-RUN passwd -u root
+# Unlock sudo tasks
+RUN echo '' >/usr/bin/sudo
+RUN chmod 755 /usr/bin/sudo
 
 CMD ["/bin/bash"]
