@@ -20,6 +20,10 @@ RUN cp /usr/local/bin/tofu /usr/local/bin/terraform
 RUN curl -L https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz | tar xzvf -
 RUN mv oc /usr/local/bin/oc
 
+# Kustomize
+RUN curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+RUN mv kustomize /usr/local/bin/kustomize
+
 # pre-commit & dependencies
 RUN PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install pre-commit
 RUN curl -sSLo ./terraform-docs.tar.gz https://terraform-docs.io/dl/v0.20.0/terraform-docs-v0.20.0-$(uname)-amd64.tar.gz
@@ -41,5 +45,8 @@ ADD pre-commit-config.yaml pre-commit-init/.pre-commit-config.yaml
 WORKDIR /pre-commit-init
 RUN pre-commit install-hooks
 WORKDIR /root
+
+# Unlock root account, for sudo?
+RUN passwd -u root
 
 CMD ["/bin/bash"]
