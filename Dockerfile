@@ -50,7 +50,7 @@ WORKDIR /root
 RUN git config --global --add safe.directory '*'
 
 # Unlock sudo tasks
-RUN echo '' >/usr/bin/sudo
+RUN echo 'exec $@' >/usr/bin/sudo
 RUN chmod 755 /usr/bin/sudo
 
 CMD ["/bin/bash"]
