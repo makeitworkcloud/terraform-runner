@@ -42,7 +42,7 @@ RUN curl -fsSL https://raw.githubusercontent.com/infracost/infracost/master/scri
 
 # Arguments for the terraformer user
 ARG USERNAME=terraformer
-ARG USER_UID=1000
+ARG USER_UID=1001
 ARG USER_GID=$USER_UID
 
 # Create the terraformer user
