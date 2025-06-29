@@ -19,10 +19,12 @@ RUN cp /usr/local/bin/tofu /usr/local/bin/terraform
 # OpenShift CLI
 RUN curl -L https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz | tar xzvf -
 RUN mv oc /usr/local/bin/oc
+RUN chmod +x /usr/local/bin/oc
 
 # Kustomize
 RUN curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
 RUN mv kustomize /usr/local/bin/kustomize
+RUN chmod +x /usr/local/bin/kustomize
 
 # pre-commit & dependencies
 RUN PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install pre-commit
@@ -38,19 +40,29 @@ RUN curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/in
 RUN curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
 RUN curl -fsSL https://raw.githubusercontent.com/infracost/infracost/master/scripts/install.sh | sh
 
+# Arguments for the terraformer user
+ARG USERNAME=terraformer
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
+# Create the terraformer user
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    #
+    # [Optional] Add sudo support. Omit if you don't need to install software after connecting.
+    && apt-get update \
+    && apt-get install -y sudo \
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
+
+USER $USERNAME
+
 # Setup pre-commit hooks
-WORKDIR /
+WORKDIR $HOME
 RUN git init pre-commit-init
 ADD pre-commit-config.yaml pre-commit-init/.pre-commit-config.yaml
-WORKDIR /pre-commit-init
+WORKDIR ${HOME}/pre-commit-init
 RUN pre-commit install-hooks
-WORKDIR /root
-
-# Enable Git as root
-RUN git config --global --add safe.directory '*'
-
-# Unlock sudo tasks
-RUN echo 'exec $@' >/usr/bin/sudo
-RUN chmod 755 /usr/bin/sudo
+WORKDIR $HOME
 
 CMD ["/bin/bash"]
