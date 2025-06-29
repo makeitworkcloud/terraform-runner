@@ -32,4 +32,4 @@ jobs:
       - name: Push to registry
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          docker image push "ghcr.io/makeitworkcloud/terraform-runner:latest" --all-tags
+          docker image push ghcr.io/makeitworkcloud/terraform-runner --all-tags
