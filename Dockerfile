@@ -2,6 +2,7 @@ FROM --platform=linux/amd64 ubuntu:latest
 
 LABEL description="Ubuntu-based image for OpenTofu/Terraform on AMD64 architecture."
 
+# Install deps
 RUN apt-get update -qy && apt-get upgrade -qy && apt-get install -qy curl unzip gnupg python3 python3-pip pipx git jq yq lsb-release sudo
 
 # Allow sudo
@@ -44,8 +45,9 @@ RUN curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/in
 RUN curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
 RUN curl -fsSL https://raw.githubusercontent.com/infracost/infracost/master/scripts/install.sh | sh
 
-# Allow root directory creation
-RUN chmod 777 /
+# Allow github actions area ownership for checkout
+RUN mkdir /__w
+RUN chown -R ubuntu: /__w
 
 USER ubuntu
 
