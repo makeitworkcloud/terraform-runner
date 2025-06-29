@@ -43,11 +43,11 @@ RUN curl -fsSL https://raw.githubusercontent.com/infracost/infracost/master/scri
 USER ubuntu
 
 # Setup pre-commit hooks
-WORKDIR $HOME
+WORKDIR /home/ubuntu
 RUN git init pre-commit-init
 ADD pre-commit-config.yaml pre-commit-init/.pre-commit-config.yaml
-WORKDIR ${HOME}/pre-commit-init
+WORKDIR /home/ubuntu/pre-commit-init
 RUN pre-commit install-hooks
-WORKDIR $HOME
+WORKDIR /home/ubuntu
 
 CMD ["/bin/bash"]
