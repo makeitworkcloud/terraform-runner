@@ -2,7 +2,11 @@ FROM --platform=linux/amd64 ubuntu:latest
 
 LABEL description="Ubuntu-based image for OpenTofu/Terraform on AMD64 architecture."
 
-RUN apt-get update -qy && apt-get upgrade -qy && apt-get install -qy curl unzip gnupg python3 python3-pip pipx git jq yq lsb-release
+RUN apt-get update -qy && apt-get upgrade -qy && apt-get install -qy curl unzip gnupg python3 python3-pip pipx git jq yq lsb-release sudo
+
+# Allow sudo
+RUN echo ubuntu ALL=\(ALL\) NOPASSWD:ALL >/etc/sudoers.d/ubuntu
+RUN chmod 0440 /etc/sudoers.d/ubuntu
 
 # SOPS
 RUN curl -LO https://github.com/getsops/sops/releases/download/v3.10.2/sops-v3.10.2.linux.amd64
@@ -39,6 +43,9 @@ RUN PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install checkov
 RUN curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
 RUN curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
 RUN curl -fsSL https://raw.githubusercontent.com/infracost/infracost/master/scripts/install.sh | sh
+
+# Allow root directory creation
+RUN chmod 777 /
 
 USER ubuntu
 
