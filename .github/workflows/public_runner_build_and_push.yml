@@ -14,10 +14,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@master
-      - name: Build docker image
-        run: docker build -t ghcr.io/makeitworkcloud/terraform-runner:latest .
 
-      - name: Push docker image
+      - name: Build image
+        uses: docker/build-push-action@v4
+        with:
+          push: false
+          tags: ghcr.io/makeitworkcloud/terraform-runner:latest
+
+      - name: Slim it!
+        uses: kitabisa/docker-slim-action@v1
+        env:
+          DSLIM_HTTP_PROBE: false
+        with:
+          target: ghcr.io/makeitworkcloud/terraform-runner:latest
+          tag: "slim"
+
+      - name: Push to registry
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          docker push ghcr.io/makeitworkcloud/terraform-runner:latest
+          docker image push "ghcr.io/makeitworkcloud/terraform-runner:latest" --all-tags
