@@ -3,7 +3,7 @@ FROM --platform=linux/amd64 ubuntu:latest
 LABEL description="Ubuntu-based image for OpenTofu/Terraform on AMD64 architecture."
 
 # Install deps
-RUN apt-get update -qy && apt-get upgrade -qy && apt-get install -qy curl unzip gnupg python3 python3-pip pipx git jq yq nodejs
+RUN apt-get update -qy && apt-get upgrade -qy && apt-get install -qy curl unzip gnupg python3 python3-pip pipx git jq yq nodejs libvirt
 
 # SOPS
 RUN curl -LO https://github.com/getsops/sops/releases/download/v3.10.2/sops-v3.10.2.linux.amd64
@@ -42,12 +42,12 @@ RUN curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/
 RUN curl -fsSL https://raw.githubusercontent.com/infracost/infracost/master/scripts/install.sh | sh
 
 # Setup pre-commit hooks
-WORKDIR /root
+WORKDIR /
 RUN git init pre-commit-init
 ADD pre-commit-config.yaml pre-commit-init/.pre-commit-config.yaml
-WORKDIR /root/pre-commit-init
+WORKDIR /pre-commit-init
 RUN pre-commit install-hooks
-WORKDIR /root
+WORKDIR /
 
 # Enable git as root
 RUN git config --global --add safe.directory '*'
