@@ -31,4 +31,4 @@ jobs:
           openshift_password: ${{ secrets.OPENSHIFT_PASSWORD }}
           insecure_skip_tls_verify: true
 
-      - run: oc import-image terraform-runner -n arc-runners
+      - run: oc import-image terraform-runner -n public-registry
