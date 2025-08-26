@@ -49,7 +49,4 @@ WORKDIR /pre-commit-init
 RUN pre-commit install-hooks
 WORKDIR /
 
-# Enable git as root
-RUN git config --global --add safe.directory '*'
-
 CMD ["/bin/bash"]
